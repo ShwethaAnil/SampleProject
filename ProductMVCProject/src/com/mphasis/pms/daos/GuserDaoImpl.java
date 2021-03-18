@@ -94,4 +94,27 @@ public class GuserDaoImpl implements GuserDao {
 		return guser;
 	}
 
+	@Override
+	public Guser forgotPassowrd(String newPass, String uname) {
+		Guser guser=new Guser();
+		try {
+			PreparedStatement pst=con.prepareStatement(
+					"select * from guser where username=?");
+			pst.setString(1, uname);
+			ResultSet rs=pst.executeQuery();
+			if(rs.next()) {
+				guser.setUserid(rs.getInt(1));
+				guser.setUsername(rs.getString(2));
+				guser.setPass(rs.getString(3));
+				java.sql.Date sqlDate =rs.getDate(4);
+				guser.setAcc_created_date(sqlDate.toLocalDate());
+				guser.setRole(rs.getString(5));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return guser;
+	}
+
 }
